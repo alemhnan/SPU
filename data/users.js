@@ -1,12 +1,14 @@
 const data = {
   users: {
-    'alessandro.maccagnan': {
+    'alessandro.maccagnan@gmail.com': {
       email: 'alessandro.maccagnan@gmail.com',
+      name: 'Alessandro',
       password: 'alessandro.maccagnan',
       role: 'admin',
     },
-    'e.righetto': {
+    'e.righetto@miriade.it': {
       email: 'e.righetto@miriade.it ',
+      name: 'Emanuele',
       password: 'e.righetto',
       role: 'admin',
     },

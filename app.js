@@ -2,6 +2,7 @@ const express = require('express');
 // const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const errorHandler = require('errorhandler');
 
 const index = require('./routes/index');
 const auth = require('./routes/auth');
@@ -17,5 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', index);
 app.use('/auth', auth);
+
+app.use(errorHandler);
 
 module.exports = app;
