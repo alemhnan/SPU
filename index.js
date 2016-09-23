@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-use-before-define */
+/* eslint-disable no-console */
 
 /**
  * Module dependencies.
@@ -7,28 +7,6 @@
 const app = require('./app');
 const debug = require('debug')('sap:server');
 const http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
 
 /**
  * Normalize a port into a number, string, or false.
@@ -51,10 +29,31 @@ const normalizePort = (val) => {
 };
 
 /**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error) => {
+function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -76,7 +75,7 @@ const onError = (error) => {
     default:
       throw error;
   }
-};
+}
 
 /**
  * Event listener for HTTP server "listening" event.

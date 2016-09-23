@@ -5,8 +5,12 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const debug = require('debug')('sap:routes:auth');
+const data = require('../data/users');
 
 const router = express.Router();
+
+router.get('/users', (req, res) => res.status(200).json(data.users));
+router.get('/users/:user', (req, res) => res.status(200).json(data.users[req.params.user]));
 
 router.post('/login', (req, res) => {
     // get private key
