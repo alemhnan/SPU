@@ -7,6 +7,7 @@ const errorHandler = require('errorhandler');
 
 const index = require('./routes/index');
 const auth = require('./routes/auth');
+const users = require('./routes/users');
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/users', users);
+
 
 app.use(errorHandler);
 

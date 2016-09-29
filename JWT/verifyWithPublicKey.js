@@ -8,11 +8,12 @@ const publicKey = argv.publicKey;
 
 // verify a token asymmetric
 const cert = fs.readFileSync(path.resolve(publicKey));  // get public key
-jwt.verify(token, cert, function (err, decoded) {
-  if (err) {
-    console.log('TOKEN NOT VERIFIED');
-    return;
-  }
-
+// invalid token - synchronous
+try {
+  const decoded = jwt.verify(token, cert, options);
   console.log(decoded);
-});
+} catch (err) {
+  // err
+  console.log('TOKEN NOT VERIFIED');
+}
+
