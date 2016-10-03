@@ -4,7 +4,7 @@ window.onload = function () {
 
 	function receiveMessage(e) {
 		// Check to make sure that this message came from the correct domain.
-		if (e.origin !== "http://localhost:3000")
+		if (e.origin !== "https://spu.herokuapp.com")
 			return;
 
     var token = e.data.token;

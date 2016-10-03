@@ -14,7 +14,7 @@ window.onload = function () {
         // We honor the 'contract'
         if (isInIframe) {
           console.log('Inside iframe');
-          window.parent.postMessage({ token: response.token }, 'http://localhost:3000');
+          window.parent.postMessage({ token: response.token }, 'https://spu.herokuapp.com');
         } else {
           console.log('Main window');
           $('#messageSpace').html(response.token);
