@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const httpErrors = require('httperrors');
 const debug = require('debug')('sap:controller:auth');
 
 const privateCert = fs.readFileSync(path.resolve('./keys/mykey.pem'));
@@ -24,16 +25,16 @@ exports.login = (req, res, next) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    return next(new Error('email or password not defined'));
+    return next(new httpErrors.BadRequest('email or password not defined'));
   }
 
   const user = data.users[email] || null;
   if (!user) {
-    return next(new Error('user not found'));
+    return next(new httpErrors.BadRequest('user not found'));
   }
 
   if (user.password !== password) {
-    return next(new Error('wrong password'));
+    return next(new httpErrors.BadRequest('wrong password'));
   }
 
   const objToSign = {
