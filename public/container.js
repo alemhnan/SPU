@@ -7,10 +7,10 @@ window.onload = function() {
 
 	function receiveMessage(e) {
 		// Check to make sure that this message came from the correct domain.
-		if (e.origin !== "http://localhost:3000")
+		if (e.origin !== "https://spu.herokuapp.com")
 			return;
 
-		readPrivateFrame.postMessage({ token: e.data.token }, 'http://localhost:3000');
+		readPrivateFrame.postMessage({ token: e.data.token }, 'https://spu.herokuapp.com');
 		
 	}
 
