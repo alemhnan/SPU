@@ -6,7 +6,8 @@
     "start": "DEBUG='sap:*' node index.js",
     "start.reload": "DEBUG='sap:*' nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "./node_modules/.bin/eslint ."
+    "eslint": "./node_modules/.bin/eslint .",
+    "deploy": "git push heroku `git subtree split --prefix Servers/Server1 feature/cross_domain`:master --force"
   },
   "dependencies": {
     "body-parser": "1.15.2",

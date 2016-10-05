@@ -1,6 +1,13 @@
 window.onload = function () {
 
-  var isInIframe = window.frameElement && window.frameElement.nodeName == "IFRAME";
+  var inIframe = function () {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }
+  var isInIframe = inIframe();
 
   $('#loginForm').submit(function (event) {
     event.preventDefault();
@@ -14,7 +21,7 @@ window.onload = function () {
         // We honor the 'contract'
         if (isInIframe) {
           console.log('Inside iframe');
-          window.parent.postMessage({ token: response.token }, 'https://spu.herokuapp.com');
+          window.parent.postMessage({ token: response.token }, 'https://containerspu.surge.sh');
         } else {
           console.log('Main window');
           $('#messageSpace').html(response.token);
