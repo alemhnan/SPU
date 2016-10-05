@@ -1,13 +1,13 @@
 {
   "name": "proto",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "",
   "scripts": {
     "start": "DEBUG='sap:*' node index.js",
     "start.reload": "DEBUG='sap:*' nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "./node_modules/.bin/eslint .",
-    "deploy": "git push heroku `git subtree split --prefix Servers/Server1 feature/cross_domain`:master --force"
+    "deploy": "git push heroku `git subtree split --prefix Servers/Server1 master`:master --force"
   },
   "dependencies": {
     "body-parser": "1.15.2",
