@@ -6,9 +6,9 @@ window.onload = function() {
 	var readPrivateFrame = document.getElementById('readPrivateFrame').contentWindow;
 
 	function receiveMessage(e) {
-		// // Check to make sure that this message came from the correct domain.
-		// if (e.origin !== "https://spu.herokuapp.com")
-		// 	return;
+		// Check to make sure that this message came from the correct domain.
+		if (e.origin !== "https://loginspu.surge.sh")
+			return;
 
 		readPrivateFrame.postMessage({ token: e.data.token }, 'https://readspu.surge.sh');
 		
