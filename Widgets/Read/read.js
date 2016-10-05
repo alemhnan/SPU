@@ -14,7 +14,7 @@ window.onload = function () {
       return;
     }
 
-    $.get('/auth/private?token=' + token)
+    $.get('https://spu.herokuapp.com/auth/private?token=' + token)
       .done(function (data) {
         $('#messageSpace').html(JSON.stringify(data));
         console.log(data);

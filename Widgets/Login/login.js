@@ -6,7 +6,7 @@ window.onload = function () {
     event.preventDefault();
     var formData = $(this).serialize();
 
-    $.post('/auth/login', formData)
+    $.post('https://spu.herokuapp.com/auth/login', formData)
       .done(function (response) {
         console.log(response);
 
