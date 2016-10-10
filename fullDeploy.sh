@@ -4,7 +4,7 @@
 git push heroku `git subtree split --prefix Servers/LoginSignup master`:master --force
 
 # Deploy ReadWrite server
-# git push heroku `git subtree split --prefix Servers/ReadWrite master`:master --force
+git push readwritespu `git subtree split --prefix Servers/ReadWrite master`:master --force
 
 cd Widgets
 ./deploy.surge.sh

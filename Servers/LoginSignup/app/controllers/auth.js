@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/* eslint-disable new-cap, no-underscore-dangle */
 
 const path = require('path');
 const fs = require('fs');
@@ -48,10 +48,12 @@ exports.login = (req, res, next) => {
       }
 
       const objToSign = {
+        userId: user._id,
         email: user.email,
         role: user.role,
       };
 
+      debug(objToSign);
       const options = { algorithm: 'RS256' };
 
       const token = jwt.sign(objToSign, privateCert, options);
@@ -76,7 +78,7 @@ exports.signup = (req, res, next) => {
         email,
         password: cryptedPassword.toString('base64'),
       };
-      return UserModel.findOneAndUpdate(query, newUserData, { new: true, upsert: true })
+      return UserModel.findOneAndUpdate(query, newUserData, { new: true, upsert: true });
     })
     .then((user) => {
       debug(user);
@@ -85,12 +87,6 @@ exports.signup = (req, res, next) => {
     .catch(next);
 };
 
-// const expressJWT = require('express-jwt');
-// var publicKey = fs.readFileSync('/path/to/public.pub');
-// expressJWT({ secret: publicCert });
-
-// Should set the user
-// We could use express-jwt
 exports.isAuthenticated = (req, res, next) => {
   const token = fromHeaderOrQuerystring(req);
   try {
