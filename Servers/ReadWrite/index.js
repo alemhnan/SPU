@@ -1,53 +1,91 @@
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
-const publicCert = fs.readFileSync(path.resolve('./keys/mykey.pub'));
+/* eslint-disable no-console */
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const methodOverride = require('method-override')
-const mongoose = require('mongoose')
-const restify = require('express-restify-mongoose')
-const app = express()
-const router = express.Router()
+/**
+ * Module dependencies.
+ */
 
-const fromHeaderOrQuerystring = (req) => {
-  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    return req.headers.authorization.split(' ')[1];
-  } else if (req.query && req.query.token) {
-    return req.query.token;
+const app = require('./app');
+const debug = require('debug')('sap:server');
+const http = require('http');
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+const normalizePort = (val) => {
+  const p = parseInt(val, 10);
+
+  if (isNaN(p)) {
+    // named pipe
+    return val;
   }
-  return null;
+
+  if (p >= 0) {
+    // port number
+    return p;
+  }
+
+  return false;
 };
 
-const isAuthenticated = (req, res, next) => {
-  const token = fromHeaderOrQuerystring(req);
-  try {
-    const options = { algorithm: 'RS256' };
-    const decoded = jwt.verify(token, publicCert, options);
-    debug(decoded);
-    return next();
-  } catch (err) {
-    return next(err);
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
   }
-};
 
+  const bind = typeof port === 'string'
+    ? `Pipe ${port}`
+    : `Port ${port}`;
 
-app.use(bodyParser.json())
-app.use(methodOverride())
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/database';
-mongoose.connect(MONGODB_URI);
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-restify.serve(router, mongoose.model('Users', new mongoose.Schema({
-  email: { type: String, required: true },
-  name: { type: String, required: true },
-  password: { type: String, required: true },
-  role: { type: String, required: true }
-})))
-
-app.use(isAuthenticated, router);
-
-app.listen(3000, () => {
-  console.log('Express server listening on port 3000')
-})
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
