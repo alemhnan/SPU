@@ -1,13 +1,16 @@
 {
   "name": "proto",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "",
+  "engines": {
+    "node": "6.x.x"
+  },
   "scripts": {
-    "start": "DEBUG='sap:*' node index.js",
-    "start.reload": "DEBUG='sap:*' nodemon index.js",
+    "start": "DEBUG='sap:*' node --debug index.js",
+    "start.reload": "DEBUG='sap:*' nodemon --debug index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "./node_modules/.bin/eslint .",
-    "deploy": "git push heroku `git subtree split --prefix Servers/Server1 master`:master --force"
+    "deploy": "git push heroku `git subtree split --prefix Servers/LoginSignup master`:master --force"
   },
   "dependencies": {
     "body-parser": "1.15.2",
@@ -15,16 +18,19 @@
     "debug": "2.2.0",
     "errorhandler": "1.4.3",
     "express": "4.14.0",
+    "express-jwt": "5.1.0",
     "httperrors": "2.1.0",
     "jsonwebtoken": "7.1.9",
     "minimist": "1.2.0",
+    "mongoose": "4.6.3",
     "morgan": "1.7.0",
+    "scrypt": "6.0.3",
     "serve-favicon": "2.3.0"
   },
   "devDependencies": {
-    "eslint": "3.5.0",
-    "eslint-config-airbnb": "11.1.0",
-    "eslint-plugin-import": "1.15.0",
+    "eslint": "3.7.1",
+    "eslint-config-airbnb": "12.0.0",
+    "eslint-plugin-import": "2.0.0",
     "eslint-plugin-jsx-a11y": "2.2.2",
     "eslint-plugin-react": "6.3.0"
   },

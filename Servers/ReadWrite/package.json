@@ -1,0 +1,23 @@
+{
+  "name": "proto",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "DEBUG='sap:*' node index.js",
+    "start.reload": "DEBUG='sap:*' nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "./node_modules/.bin/eslint .",
+    "deploy": "git push heroku `git subtree split --prefix Servers/Server2 master`:master --force"
+  },
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "express-restify-mongoose": "4.1.1",
+    "jsonwebtoken": "7.1.9",
+    "method-override": "2.3.6",
+    "mongoose": "4.6.3"
+  },
+  "devDependencies": {},
+  "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com> (http://www.redbabel.com)",
+  "license": "ISC"
+}
