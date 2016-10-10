@@ -87,12 +87,6 @@ exports.signup = (req, res, next) => {
     .catch(next);
 };
 
-// const expressJWT = require('express-jwt');
-// var publicKey = fs.readFileSync('/path/to/public.pub');
-// expressJWT({ secret: publicCert });
-
-// Should set the user
-// We could use express-jwt
 exports.isAuthenticated = (req, res, next) => {
   const token = fromHeaderOrQuerystring(req);
   try {
