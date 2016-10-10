@@ -1,7 +1,10 @@
 {
   "name": "proto",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "",
+  "engines": {
+    "node": "6.x.x"
+  },
   "scripts": {
     "start": "DEBUG='sap:*' node --debug index.js",
     "start.reload": "DEBUG='sap:*' nodemon --debug index.js",
