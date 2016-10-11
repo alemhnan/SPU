@@ -12,7 +12,7 @@ const getRandomString = length =>
 
 const infoSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  random: { type: String, default: getRandomString(12) },
+  random: { type: String, default: () => getRandomString(12) },
   type: { type: String, default: 'NOT_DEFINED' },
   value: { type: String, required: true },
 });
