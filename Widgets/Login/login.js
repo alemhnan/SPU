@@ -17,6 +17,8 @@ window.onload = function () {
       .done(function (response) {
         console.log(response);
 
+        $('input[type="submit"]').attr('disabled', 'true');
+
         // Widget loaded as iframe
         // We honor the 'contract'
         if (isInIframe) {

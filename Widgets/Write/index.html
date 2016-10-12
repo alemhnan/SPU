@@ -13,9 +13,26 @@
 <body>
 
 	<p>
-		TO BE FINISHED
+		<h2>
+			Write private info
+		</h2>
 	</p>
 
+	<form id="writeForm" action="https://readwritespu.herokuapp.com/userinfo" method="POST">
+		Type: <br>
+		<input type="string" name="type" value="fake_type">
+		<br><br> Value: <br>
+		<input type="value" name="value" value="fake_value">
+		<br><br>
+
+		<input type="submit" value="submit" disabled="true"> <br>
+
+		<br><br>
+	</form>
+
+	<p>
+		<div id="messageSpace"></div>
+	</p>
 
 	<script src="write.js"></script>
 

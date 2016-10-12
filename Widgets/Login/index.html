@@ -2,34 +2,39 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Standard Sanità Regione Veneto</title>
-  <meta name="description" content="Standard Sanità Regione Veneto">
-  <meta name="author" content="AM">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<meta charset="utf-8">
+	<title>Standard Sanità Regione Veneto</title>
+	<meta name="description" content="Standard Sanità Regione Veneto">
+	<meta name="author" content="AM">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 </head>
 
 <body>
-  <form id="loginForm" action="https://spu.herokuapp.com/auth/login" method="POST">
-    Email: <br>
-    <input type="email" name="email" value="alessandro.maccagnan@gmail.com">
-    <br><br>
-
-    Password: <br>
-    <input type="password" name="password" value="alessandro.maccagnan">
-    <br><br>
-
-    <input type="submit" value="login" > <br>
-
-    <br><br>
-  </form>
 
 	<p>
-    <div id="messageSpace"></div>
+		<h2>
+			Login
+		</h2>
 	</p>
 
-  <script src="login.js"></script>
+	<form id="loginForm" action="https://spu.herokuapp.com/auth/login" method="POST">
+		Email: <br>
+		<input type="email" name="email" value="alessandro.maccagnan@gmail.com">
+		<br><br> Password: <br>
+		<input type="password" name="password" value="alessandro.maccagnan">
+		<br><br>
+
+		<input type="submit" value="login"> <br>
+
+		<br><br>
+	</form>
+
+	<p>
+		<div id="messageSpace"></div>
+	</p>
+
+	<script src="login.js"></script>
 
 
 </body>
