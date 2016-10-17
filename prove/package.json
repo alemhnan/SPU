@@ -1,0 +1,16 @@
+{
+  "name": "prove",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com> (http://www.redbabel.com)",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "4.7.7",
+    "json-schema": "0.2.3",
+    "load-json-file": "2.0.0"
+  }
+}
