@@ -1,0 +1,15 @@
+{
+  "name": "jwt",
+  "version": "0.2.0",
+  "description": "To create a private key: `openssl genrsa -out mykey.pem 1024`",
+  "main": "signWithPrivateKey.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com> (http://www.redbabel.com)",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "7.1.9",
+    "minimist": "1.2.0"
+  }
+}
