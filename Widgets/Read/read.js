@@ -35,7 +35,9 @@ window.onload = () => {
     new Postmate.Model({
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
     })
-      .then((_containerHandler) => { window.containerHandler = _containerHandler; });
+      // .then((_containerHandler) => { containerHandler = _containerHandler; });
+      .then(() => { });
+
   }
 };
 

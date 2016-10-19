@@ -1,3 +1,5 @@
+let containerHandler;
+
 const inIframe = () => {
   try {
     return window.self !== window.top;
@@ -9,7 +11,7 @@ const inIframe = () => {
 window.onload = () => {
   if (inIframe() === true) {
     new Postmate.Model()
-      .then((_containerHandler) => { window.containerHandler = _containerHandler; });
+      .then((_containerHandler) => { containerHandler = _containerHandler; });
   }
 
   $('#loginForm').submit(function sumbitLoginForm(event) {
@@ -20,8 +22,8 @@ window.onload = () => {
       .done((response) => {
         $('input[type="submit"]').attr('disabled', 'true');
 
-        if (window.containerHandler) {
-          window.containerHandler.emit('LOGGED', { token: response.token });
+        if (containerHandler) {
+          containerHandler.emit('LOGGED', { token: response.token });
         } else {
           $('#messageSpace').html(response.token);
         }

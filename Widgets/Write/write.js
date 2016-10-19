@@ -1,3 +1,5 @@
+let containerHandler;
+
 const inIframe = () => {
   try {
     return window.self !== window.top;
@@ -22,7 +24,7 @@ const enableWrite = (token, userId) => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.post(`https://readwritespu.herokuapp.com/userinfo/${userId}?token=${token}`, formData)
-      .done(() => window.containerHandler.emit('WROTE'))
+      .done(() => containerHandler.emit('WROTE'))
       .fail((response) => {
         $('#messageSpace').html(response.responseText);
       });
@@ -34,6 +36,6 @@ window.onload = () => {
     new Postmate.Model({
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
     })
-      .then((_containerHandler) => { window.containerHandler = _containerHandler; });
+      .then((_containerHandler) => { containerHandler = _containerHandler; });
   }
 };
