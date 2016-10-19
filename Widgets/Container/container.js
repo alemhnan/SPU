@@ -1,34 +1,55 @@
-window.onload = function () {
+window.onload = () => {
+  let token = null;
+  let tokenDecoded = null;
 
-	var messageEle = document.getElementById('messageSpace');
+  // Init login widget
+  let loginWidgetHandler;
+  const handShakeLoginWidget = new Postmate({
+    container: document.getElementById('loginFrameDiv'),
+    url: 'https://loginspu.surge.sh/index.html',
+  })
+    .then((_loginWidgetHandler) => { loginWidgetHandler = _loginWidgetHandler; });
+  // End init login widget
 
-	var readPrivateFrame = document.getElementById('readPrivateFrame').contentWindow;
-	var writePrivateFrame = document.getElementById('writePrivateFrame').contentWindow;
-	var token = null;
+  // Init read widget
+  let readWidgetHandler;
+  const handShakeReadWidget = new Postmate({
+    container: document.getElementById('readFrameDiv'),
+    url: 'https://readspu.surge.sh/index.html',
+  })
+    .then((_readWidgetHandler) => { readWidgetHandler = _readWidgetHandler; });
+  // End read login widget
 
-	function receiveMessage(e) {
-		// Check to make sure that this message came from the correct domain.
-		if (e.origin !== "https://loginspu.surge.sh" && e.origin !== "https://readwritespu.surge.sh") {
-			return;
-		}
+  // Init write widget
+  let writeWidgetHandler;
+  const handShakeWriteWidget = new Postmate({
+    container: document.getElementById('writeFrameDiv'),
+    url: 'https://readwritespu.surge.sh/index.html',
+  })
+    .then((_writeWidgetHandler) => { writeWidgetHandler = _writeWidgetHandler; });
+  // End write login widget
 
-		if (e.origin === "https://loginspu.surge.sh") {
-			token = e.data.token;
-			var decoded = jwt_decode(token);
+  Promise.all([handShakeLoginWidget, handShakeReadWidget, handShakeWriteWidget])
+    .then(() => {
+      loginWidgetHandler.frame.style.height = `${300}px`;
+      loginWidgetHandler.frame.style.width = `${400}px`;
 
-			readPrivateFrame.postMessage({ token: token, userId: decoded.userId }, 'https://readspu.surge.sh');
-			writePrivateFrame.postMessage({ token: token, userId: decoded.userId }, 'https://readwritespu.surge.sh');
-		}
+      readWidgetHandler.frame.style.height = `${300}px`;
+      readWidgetHandler.frame.style.width = `${400}px`;
 
-		if (e.origin === "https://readwritespu.surge.sh") {
-			var status = e.data.status;
-			if (status === 'POST_DONE') {
-				var decoded = jwt_decode(token);
-				readPrivateFrame.postMessage({ token: token, userId: decoded.userId }, 'https://readspu.surge.sh');
-			}
-		}
-	}
+      writeWidgetHandler.frame.style.height = `${300}px`;
+      writeWidgetHandler.frame.style.width = `${400}px`;
 
-	window.addEventListener('message', receiveMessage);
+      // Flow 1
+      loginWidgetHandler.on('LOGGED', (data) => {
+        tokenDecoded = jwt_decode(data.token);
+        token = data.token;
+        readWidgetHandler.call('LOAD_USER_INFO', { token: data.token, userId: tokenDecoded.userId });
+        writeWidgetHandler.call('ENABLE_WRITE', { token: data.token, userId: tokenDecoded.userId });
+      });
 
-}
+      // Flow 2
+      writeWidgetHandler.on('WROTE', () =>
+        readWidgetHandler.call('LOAD_USER_INFO', { token, userId: tokenDecoded.userId }));
+    });
+};

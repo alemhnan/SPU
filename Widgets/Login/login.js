@@ -1,40 +1,34 @@
-window.onload = function () {
-
-  var inIframe = function () {
-    try {
-      return window.self !== window.top;
-    } catch (e) {
-      return true;
-    }
+const inIframe = () => {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
   }
-  var isInIframe = inIframe();
+};
 
-  $('#loginForm').submit(function (event) {
+window.onload = () => {
+  if (inIframe() === true) {
+    new Postmate.Model()
+      .then((_containerHandler) => { window.containerHandler = _containerHandler; });
+  }
+
+  $('#loginForm').submit(function sumbitLoginForm(event) {
     event.preventDefault();
-    var formData = $(this).serialize();
+    const formData = $(this).serialize();
 
     $.post('https://spu.herokuapp.com/auth/login', formData)
-      .done(function (response) {
-        console.log(response);
-
+      .done((response) => {
         $('input[type="submit"]').attr('disabled', 'true');
 
-        // Widget loaded as iframe
-        // We honor the 'contract'
-        if (isInIframe) {
-          console.log('Inside iframe');
-          window.parent.postMessage({ token: response.token }, 'https://containerspu.surge.sh');
+        if (window.containerHandler) {
+          window.containerHandler.emit('LOGGED', { token: response.token });
         } else {
-          console.log('Main window');
           $('#messageSpace').html(response.token);
-        };
-
+        }
       })
-      .fail(function (response) {
-        console.log('Login failed');
+      .fail((response) => {
         $('#messageSpace').html(response.responseText);
       });
-
   });
+};
 
-}

@@ -1,43 +1,39 @@
-window.onload = function () {
+const inIframe = () => {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+};
 
-  function receiveMessage(e) {
-    // Check to make sure that this message came from the correct domain.
-    if (e.origin !== "https://containerspu.surge.sh")
-      return;
-
-    var token = e.data.token;
-    var userId = e.data.userId;
-
-    if (!token) {
-      $('#messageSpace').html('Token not provided');
-      return;
-    }
-
-    if (!userId) {
-      $('#messageSpace').html('UserId not provided');
-      return;
-    }
-
-    $('input[type="submit"]').removeAttr('disabled');
-
-    $('#writeForm').submit(function (event) {
-      event.preventDefault();
-      var formData = $(this).serialize();
-      $.post(`https://readwritespu.herokuapp.com/userinfo/${userId}?token=${token}`, formData)
-        .done(function (data) {
-          console.log(data);
-          window.parent.postMessage({ status: 'POST_DONE' }, 'https://containerspu.surge.sh');
-        })
-        .fail(function (response) {
-          console.log(response.responseText);
-        });
-    })
+const enableWrite = (token, userId) => {
+  if (!token) {
+    $('#messageSpace').html('Token not provided');
+    return;
   }
 
-  window.addEventListener('message', receiveMessage);
+  if (!userId) {
+    $('#messageSpace').html('UserId not provided');
+    return;
+  }
 
+  $('input[type="submit"]').removeAttr('disabled');
+  $('#writeForm').submit(function submitWriteForm(event) {
+    event.preventDefault();
+    const formData = $(this).serialize();
+    $.post(`https://readwritespu.herokuapp.com/userinfo/${userId}?token=${token}`, formData)
+      .done(() => window.containerHandler.emit('WROTE'))
+      .fail((response) => {
+        $('#messageSpace').html(response.responseText);
+      });
+  });
+};
 
-
-
-
-}
+window.onload = () => {
+  if (inIframe() === true) {
+    new Postmate.Model({
+      ENABLE_WRITE: data => enableWrite(data.token, data.userId),
+    })
+      .then((_containerHandler) => { window.containerHandler = _containerHandler; });
+  }
+};

@@ -1,0 +1,20 @@
+{
+    "extends": [
+        "airbnb/base"
+    ],
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "globals": {
+        "Postmate": true,
+        "jwt_decode": true
+    },
+    "rules": {
+        "max-len": [
+            0,
+            120,
+            4
+        ]
+    }
+}

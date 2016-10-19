@@ -11,26 +11,19 @@
 <body>
 	<h1>Container Window</h1>
 
+	<div id="loginFrameDiv" style="float:left"></div>
 
-	<iframe id="loginFrame" src="https://loginspu.surge.sh/index.html" width="400" height="300">
-		<p>Your browser does not support iframes.</p>
-	</iframe>
+	<div id="readFrameDiv" style="float:left"></div>
 
-	<iframe id="readPrivateFrame" src="https://readspu.surge.sh/index.html" width="400" height="300">
-		<p>Your browser does not support iframes.</p>
-	</iframe>
-
-	<iframe id="writePrivateFrame" src="https://readwritespu.surge.sh/index.html" width="400" height="300">
-		<p>Your browser does not support iframes.</p>
-	</iframe>
-
+	<div id="writeFrameDiv" style="float:left"></div>
 
 	<p>
 		<div id="messageSpace"></div>
 	</p>
 
-	<script src="container.js"></script>
 	<script src="jwt-decode.min.js"></script>
+	<script src="postmate.min.js"></script>
+	<script src="container.js"></script>
 
 </body>
 
