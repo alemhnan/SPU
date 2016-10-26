@@ -7,7 +7,8 @@
         "jquery": true
     },
     "globals": {
-        "jwt_decode": true
+        "jwt_decode": true,
+        "SPU": true
     },
     "rules": {
         "max-len": [

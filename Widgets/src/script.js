@@ -1,8 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-// this.frame = document.createElement('iframe');
-//     (container || document.body).appendChild(this.frame);
-
 const Promise = (() => {
   try {
     return window ? window.Promise : Promise;
@@ -53,38 +50,48 @@ const sanitize = (message, allowedOrigin) => {
   // Mime type reserved
   if (message.data.mimeType !== MIME_TYPE) return false;
 
-  // Events could be just strings
-  if (typeof message.event !== 'string') return false;
+  // Events could be just strings or undefined
+  if (!!message.event && typeof message.event !== 'string') return false;
 
   // Type of message could be only one of the following
   if (!{ handshakeReply: 1, handshake: 1, emit: 1, listen: 1 }[message.data.type]) return false;
   return true;
 };
 
-const sendHandShake = (ContainerWindow, widgetIframe, url) => {
+const sendHandShake = (args) => {
+  const { windowContainer, widget, url } = args;
   const targetOrigin = resolveOrigin(url);
   return new Promise((resolve, reject) => {
     const reply = (event) => {
       if (!sanitize(event, targetOrigin)) return false;
 
       if (event.data.type === 'handshakeReply') {
-        ContainerWindow.removeEventListener('message', reply, false);
+        windowContainer.removeEventListener('message', reply, false);
         return resolve(event.origin);
       }
       return reject('Failed handshake');
     };
-    ContainerWindow.addEventListener('message', reply, false);
+    windowContainer.addEventListener('message', reply, false);
     const message = {
       mimeType: MIME_TYPE,
       type: 'handshake',
     };
-    widgetIframe.postMessage(message, targetOrigin);
-    widgetIframe.src = url;
+    const loaded = () => {
+      setTimeout(() => widget.contentWindow.postMessage(message, targetOrigin), 0);
+    };
+
+    if (widget.attachEvent) {
+      widget.attachEvent('onload', loaded);
+    } else {
+      widget.onload = loaded;
+    }
+    widget.src = url;
   });
 };
 
-const listenAndReplyToHandShake = (widgetWindow, allowedOrigins) =>
-  new Promise((resolve, reject) => {
+const listenAndReplyToHandShake = (args) => {
+  const { widgetWindow, allowedOrigins } = args;
+  return new Promise((resolve, reject) => {
     const listenAndReply = (event) => {
       // We refuse the handshake if the type is wrong
       if (event.data.type !== 'handshake') {
@@ -116,6 +123,7 @@ const listenAndReplyToHandShake = (widgetWindow, allowedOrigins) =>
     // We listen for messages
     widgetWindow.addEventListener('message', listenAndReply, false);
   });
+};
 
 // const SPU = { listenAndReplyToHandShake, sendHandShake };
 export { listenAndReplyToHandShake, sendHandShake };

@@ -21,20 +21,20 @@ const banner = ['/**',
 gulp.task('build', () =>
   rollup({
     entry: './src/script.js',
-    sourceMap: true,
+    // sourceMap: true,
     format: 'umd',
     moduleName: 'SPU',
     plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      uglify({}, minify),
+      // babel({
+      //   exclude: 'node_modules/**',
+      // }),
+      // uglify({}, minify),
     ],
   })
     .pipe(source('spu.min.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
+    // .pipe(buffer())
+    // .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(header(banner, { pkg }))
-    .pipe(sourcemaps.write('.'))
+    // .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./build'))
 );

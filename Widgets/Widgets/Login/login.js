@@ -2,8 +2,19 @@ let containerHandler;
 
 window.onload = () => {
   if (SPU.inIframe() === true) {
-    new Postmate.Model()
-      .then((_containerHandler) => { containerHandler = _containerHandler; });
+    SPU.listenAndReplyToHandShake({
+      widgetWindow: window,
+      allowedOrigins: ['https://containerspu.surge.sh'],
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // new Postmate.Model()
+    //   .then((_containerHandler) => { containerHandler = _containerHandler; });
   }
 
   $('#loginForm').submit(function sumbitLoginForm(event) {
