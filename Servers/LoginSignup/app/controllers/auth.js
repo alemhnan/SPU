@@ -14,16 +14,6 @@ const scryptParameters = scrypt.paramsSync(0.1);
 const UserModel = require('../models/users').UserModel;
 
 const privateCert = fs.readFileSync(path.resolve('./keys/mykey.pem'));
-const publicCert = fs.readFileSync(path.resolve('./keys/mykey.pub'));
-
-const fromHeaderOrQuerystring = (req) => {
-  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    return req.headers.authorization.split(' ')[1];
-  } else if (req.query && req.query.token) {
-    return req.query.token;
-  }
-  return null;
-};
 
 exports.login = (req, res, next) => {
   const email = req.body.email;
@@ -87,14 +77,4 @@ exports.signup = (req, res, next) => {
     .catch(next);
 };
 
-exports.isAuthenticated = (req, res, next) => {
-  const token = fromHeaderOrQuerystring(req);
-  try {
-    const options = { algorithm: 'RS256' };
-    const decoded = jwt.verify(token, publicCert, options);
-    debug(decoded);
-    return next();
-  } catch (err) {
-    return next(err);
-  }
-};
+exports.allowedDomains = (req, res) => res.status(200).json(['containerspu.surge.sh']);
