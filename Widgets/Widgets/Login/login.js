@@ -1,12 +1,6 @@
-let containerHandler;
+/* global inIframe */
 
-const inIframe = () => {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-};
+let containerHandler;
 
 window.onload = () => {
   if (inIframe() === true) {

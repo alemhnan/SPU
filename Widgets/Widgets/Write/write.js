@@ -1,12 +1,6 @@
-let containerHandler;
+/* global inIframe */
 
-const inIframe = () => {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-};
+let containerHandler;
 
 const enableWrite = (token, userId) => {
   if (!token) {

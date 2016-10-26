@@ -1,10 +1,4 @@
-const inIframe = () => {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-};
+/* global inIframe */
 
 const loadUserInfo = (token, userId) => {
   if (!token) {
@@ -37,7 +31,6 @@ window.onload = () => {
     })
       // .then((_containerHandler) => { containerHandler = _containerHandler; });
       .then(() => { });
-
   }
 };
 
