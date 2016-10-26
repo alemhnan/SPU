@@ -7,9 +7,7 @@
         "jquery": true
     },
     "globals": {
-        "Postmate": true,
-        "jwt_decode": true,
-        "inIframe": true
+        "jwt_decode": true
     },
     "rules": {
         "max-len": [

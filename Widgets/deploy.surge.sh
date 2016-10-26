@@ -1,22 +1,22 @@
 #!/bin/bash
 
-cp Common/scripts.js Containers/MainContainer/common.scripts.js
+cp build/spu* Containers/MainContainer/
 surge Containers/MainContainer
 
-#cp Common/scripts.js Containers/BadContainer/common.scripts.js
+#cp build/spu.js Containers/BadContainer/spu.js
 # surge Containers/BadContainer
 
-#cp Common/scripts.js Containers/BadContainer/common.scripts.js
+#cp build/spu.js Containers/BadContainer/spu.js
 # surge Containers/PopContainer
 
-cp Common/scripts.js Widgets/Signup/common.scripts.js
+cp build/spu* Widgets/Signup/
 surge Widgets/Signup
 
-cp Common/scripts.js Widgets/Login/common.scripts.js
+cp build/spu* Widgets/Login/
 surge Widgets/Login
 
-cp Common/scripts.js Widgets/Read/common.scripts.js
+cp build/spu* Widgets/Read/
 surge Widgets/Read
 
-cp Common/scripts.js Widgets/Write/common.scripts.js
+cp build/spu* Widgets/Write/
 surge Widgets/Write

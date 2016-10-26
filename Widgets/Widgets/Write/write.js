@@ -24,7 +24,7 @@ const enableWrite = (token, userId) => {
 };
 
 window.onload = () => {
-  if (inIframe(window) === true) {
+  if (SPU.inIframe() === true) {
     new Postmate.Model({
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
     })

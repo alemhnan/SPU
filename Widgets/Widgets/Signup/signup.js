@@ -1,7 +1,7 @@
 let containerHandler;
 
 window.onload = () => {
-  if (inIframe(window) === true) {
+  if (SPU.inIframe() === true) {
     new Postmate.Model()
       .then((_containerHandler) => { containerHandler = _containerHandler; });
   }

@@ -23,7 +23,7 @@ const loadUserInfo = (token, userId) => {
 
 window.onload = () => {
   $('#messageSpace').html('<p>No info yet</p>');
-  if (inIframe(window) === true) {
+  if (SPU.inIframe() === true) {
     new Postmate.Model({
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
     })
