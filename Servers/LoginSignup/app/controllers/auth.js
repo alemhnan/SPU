@@ -77,4 +77,4 @@ exports.signup = (req, res, next) => {
     .catch(next);
 };
 
-exports.allowedDomains = (req, res) => res.status(200).json(['containerspu.surge.sh']);
+exports.allowedDomains = (req, res) => res.status(200).json(['https://containerspu.surge.sh']);
