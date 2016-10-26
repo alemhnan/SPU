@@ -1,5 +1,3 @@
-/* global inIframe */
-
 let containerHandler;
 
 const enableWrite = (token, userId) => {
@@ -26,7 +24,7 @@ const enableWrite = (token, userId) => {
 };
 
 window.onload = () => {
-  if (inIframe() === true) {
+  if (inIframe(window) === true) {
     new Postmate.Model({
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
     })

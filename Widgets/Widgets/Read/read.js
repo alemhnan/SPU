@@ -1,5 +1,3 @@
-/* global inIframe */
-
 const loadUserInfo = (token, userId) => {
   if (!token) {
     $('#messageSpace').html('Token not provided');
@@ -25,7 +23,7 @@ const loadUserInfo = (token, userId) => {
 
 window.onload = () => {
   $('#messageSpace').html('<p>No info yet</p>');
-  if (inIframe() === true) {
+  if (inIframe(window) === true) {
     new Postmate.Model({
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
     })

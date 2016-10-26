@@ -1,3 +1,4 @@
+// /* eslint-disable no-unused-vars */
 const inIframe = (window) => {
   try {
     return window.self !== window.top;
