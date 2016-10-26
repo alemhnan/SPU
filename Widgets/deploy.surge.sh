@@ -1,10 +1,10 @@
 #!/bin/bash
 
-surge Container
-surge BadContainer
-surge PopContainer
+surge Containers/MainContainer
+# surge Containers/BadContainer
+# surge Containers/PopContainer
 
-surge Signup
-surge Login
-surge Read
-surge Write
+surge Widgets/Signup
+surge Widgets/Login
+surge Widgets/Read
+surge Widgets/Write
