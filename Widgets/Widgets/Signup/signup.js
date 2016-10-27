@@ -2,7 +2,13 @@ let containerHandler;
 
 window.onload = () => {
   if (SPU.inIframe() === true) {
-    new Postmate.Model()
+    new SPU.Widget({
+      widgetWindow: window,
+      allowedOrigins: [
+        'https://containerspu.surge.sh',
+        'https://popcontainerspu.surge.sh',
+      ],
+    })
       .then((_containerHandler) => { containerHandler = _containerHandler; });
   }
 
