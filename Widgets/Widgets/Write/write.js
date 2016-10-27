@@ -25,8 +25,14 @@ const enableWrite = (token, userId) => {
 
 window.onload = () => {
   if (SPU.inIframe() === true) {
-    new Postmate.Model({
+    const model = {
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
+    };
+
+    new SPU.Widget({
+      widgetWindow: window,
+      allowedOrigins: ['https://containerspu.surge.sh'],
+      model,
     })
       .then((_containerHandler) => { containerHandler = _containerHandler; });
   }

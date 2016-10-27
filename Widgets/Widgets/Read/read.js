@@ -24,8 +24,13 @@ const loadUserInfo = (token, userId) => {
 window.onload = () => {
   $('#messageSpace').html('<p>No info yet</p>');
   if (SPU.inIframe() === true) {
-    new Postmate.Model({
+    const model = {
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
+    };
+    new SPU.Widget({
+      widgetWindow: window,
+      allowedOrigins: ['https://containerspu.surge.sh'],
+      model,
     })
       // .then((_containerHandler) => { containerHandler = _containerHandler; });
       .then(() => { });
