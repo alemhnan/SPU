@@ -56,8 +56,12 @@ class Container {
     const { windowContainer, widgetContainer, url } = args;
 
     this.windowContainer = windowContainer;
-    this.widgetFrame = window.document.createElement('iframe');
-    (widgetContainer || window.document.body).appendChild(this.widgetFrame);
+
+    // http://stackoverflow.com/questions/16010204/get-reference-of-window-object-from-a-dom-element
+    const widgetWindow = widgetContainer.ownerDocument.defaultView;
+    this.widgetFrame = widgetWindow.document.createElement('iframe');
+
+    (widgetContainer || widgetWindow.document.body).appendChild(this.widgetFrame);
 
     this.windowWidget = this.widgetFrame.contentWindow || this.widgetFrame.contentDocument.parentWindow;
 
@@ -151,7 +155,7 @@ class Widget {
 
     this.widgetWindow = widgetWindow;
     this.model = model;
-    this.container = this.widgetWindow.parent;
+    // this.containerWindow = containerWindow;
 
     this.widgetWindow.addEventListener('message', (event) => {
       if (!sanitize(event, this.containerOrigin)) return;
@@ -196,7 +200,7 @@ class Widget {
           type: 'handshakeReply',
         };
         event.source.postMessage(message, event.origin);
-
+        this.containerWindow = event.source;
         this.containerOrigin = event.origin;
         return resolve(this);
       };
@@ -213,7 +217,7 @@ class Widget {
       action,
       data,
     };
-    this.container.postMessage(message, this.containerOrigin);
+    this.containerWindow.postMessage(message, this.containerOrigin);
   }
 }
 

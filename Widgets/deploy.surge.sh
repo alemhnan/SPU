@@ -3,11 +3,11 @@
 cp build/spu* Containers/MainContainer/
 surge Containers/MainContainer
 
-#cp build/spu.js Containers/BadContainer/spu.js
+# cp build/spu* Containers/BadContainer/spu.js
 # surge Containers/BadContainer
 
-#cp build/spu.js Containers/BadContainer/spu.js
-# surge Containers/PopContainer
+cp build/spu* Containers/PopContainer/
+surge Containers/PopContainer
 
 cp build/spu* Widgets/Signup/
 surge Widgets/Signup

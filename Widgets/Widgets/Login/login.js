@@ -4,7 +4,11 @@ window.onload = () => {
   if (SPU.inIframe() === true) {
     new SPU.Widget({
       widgetWindow: window,
-      allowedOrigins: ['https://containerspu.surge.sh'],
+      allowedOrigins: [
+        'https://containerspu.surge.sh',
+        'https://popcontainerspu.surge.sh',
+      ],
+      model: {},
     })
       .then((_containerHandler) => { containerHandler = _containerHandler; });
   }
