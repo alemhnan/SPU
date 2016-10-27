@@ -1,1 +1,3 @@
 node_modules/**
+spu.min.*
+build/**

@@ -1,16 +1,28 @@
 {
-  "name": "widgets",
-  "version": "1.0.0",
-  "description": "",
+  "name": "spu",
+  "version": "0.5.0",
+  "description": "Implementation of Container/Widget communication as per SPU Standard",
   "main": "index.js",
+  "license": "MIT",
+  "homepage": "https://github.com/alemhnan/SPU",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com> (http://www.redbabel.com)",
-  "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "babel-preset-es2015-rollup": "1.2.0",
     "eslint": "3.8.1",
     "eslint-config-airbnb": "12.0.0",
-    "eslint-plugin-import": "2.0.1"
+    "eslint-plugin-import": "2.0.1",
+    "gulp": "3.9.1",
+    "gulp-eslint": "3.0.1",
+    "gulp-header": "1.8.8",
+    "gulp-sourcemaps": "2.2.0",
+    "rollup-plugin-babel": "2.6.1",
+    "rollup-plugin-uglify": "1.0.1",
+    "rollup-stream": "1.14.0",
+    "uglify-js": "2.7.4",
+    "vinyl-buffer": "1.0.0",
+    "vinyl-source-stream": "1.1.0"
   }
 }
