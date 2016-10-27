@@ -7,8 +7,8 @@
         "jquery": true
     },
     "globals": {
-        "Postmate": true,
-        "jwt_decode": true
+        "jwt_decode": true,
+        "SPU": true
     },
     "rules": {
         "max-len": [

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>SPU: Write widget</title>
+	<title>SPU: Signup widget</title>
 	<meta name="description" content="Standard Portale Unico [SPU] Sanità Regione Veneto">
 	<meta name="author" content="AM">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -14,18 +14,18 @@
 
 	<p>
 		<h2>
-			Write private info
+			Signup
 		</h2>
 	</p>
 
-	<form id="writeForm" action="https://readwritespu.herokuapp.com/userinfo" method="POST">
-		Type: <br>
-		<input type="string" name="type" value="fake_type">
-		<br><br> Value: <br>
-		<input type="value" name="value" value="fake_value">
+	<form id="signupForm" action="https://spu.herokuapp.com/auth/signup" method="POST">
+		Email: <br>
+		<input type="email" name="email" value="alessandro.maccagnan@gmail.com">
+		<br><br> Password: <br>
+		<input type="password" name="password" value="alessandro.maccagnan">
 		<br><br>
 
-		<input type="submit" value="submit" disabled="true"> <br>
+		<input type="submit" value="login"> <br>
 
 		<br><br>
 	</form>
@@ -34,9 +34,9 @@
 		<div id="messageSpace"></div>
 	</p>
 
+	<script src="spu.min.js"></script>
+	<script src="signup.js"></script>
 	<script src="postmate.min.js"></script>
-	<script src="write.js"></script>
-
 </body>
 
 </html>

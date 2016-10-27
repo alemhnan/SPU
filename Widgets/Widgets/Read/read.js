@@ -1,11 +1,3 @@
-const inIframe = () => {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-};
-
 const loadUserInfo = (token, userId) => {
   if (!token) {
     $('#messageSpace').html('Token not provided');
@@ -31,13 +23,17 @@ const loadUserInfo = (token, userId) => {
 
 window.onload = () => {
   $('#messageSpace').html('<p>No info yet</p>');
-  if (inIframe() === true) {
-    new Postmate.Model({
+  if (SPU.inIframe() === true) {
+    const model = {
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
+    };
+    new SPU.Widget({
+      widgetWindow: window,
+      allowedOrigins: ['https://containerspu.surge.sh'],
+      model,
     })
       // .then((_containerHandler) => { containerHandler = _containerHandler; });
       .then(() => { });
-
   }
 };
 

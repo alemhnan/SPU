@@ -1,13 +1,5 @@
 let containerHandler;
 
-const inIframe = () => {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-};
-
 const enableWrite = (token, userId) => {
   if (!token) {
     $('#messageSpace').html('Token not provided');
@@ -32,9 +24,15 @@ const enableWrite = (token, userId) => {
 };
 
 window.onload = () => {
-  if (inIframe() === true) {
-    new Postmate.Model({
+  if (SPU.inIframe() === true) {
+    const model = {
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
+    };
+
+    new SPU.Widget({
+      widgetWindow: window,
+      allowedOrigins: ['https://containerspu.surge.sh'],
+      model,
     })
       .then((_containerHandler) => { containerHandler = _containerHandler; });
   }

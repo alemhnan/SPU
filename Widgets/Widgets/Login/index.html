@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>SPU: Login widget</title>
+	<meta name="description" content="Standard Portale Unico [SPU] Sanità Regione Veneto">
+	<meta name="author" content="AM">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</head>
+
+<body>
+
+	<p>
+		<h2>
+			Login
+		</h2>
+	</p>
+
+	<form id="loginForm" action="https://spu.herokuapp.com/auth/login" method="POST">
+		Email: <br>
+		<input type="email" name="email" value="alessandro.maccagnan@gmail.com">
+		<br><br> Password: <br>
+		<input type="password" name="password" value="alessandro.maccagnan">
+		<br><br>
+
+		<input type="submit" value="login"> <br>
+
+		<br><br>
+	</form>
+
+	<p>
+		<div id="messageSpace"></div>
+	</p>
+
+	<script src="spu.min.js"></script>
+	<script src="login.js"></script>
+	<script src="postmate.min.js"></script>
+</body>
+
+</html>

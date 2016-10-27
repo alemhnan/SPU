@@ -1,6 +1,22 @@
 #!/bin/bash
 
-surge Container
-surge Login
-surge Read
-surge Write
+cp build/spu* Containers/MainContainer/
+surge Containers/MainContainer
+
+#cp build/spu.js Containers/BadContainer/spu.js
+# surge Containers/BadContainer
+
+#cp build/spu.js Containers/BadContainer/spu.js
+# surge Containers/PopContainer
+
+cp build/spu* Widgets/Signup/
+surge Widgets/Signup
+
+cp build/spu* Widgets/Login/
+surge Widgets/Login
+
+cp build/spu* Widgets/Read/
+surge Widgets/Read
+
+cp build/spu* Widgets/Write/
+surge Widgets/Write

@@ -1,4 +1,4 @@
-/* eslint-disable new-cap, no-underscore-dangle */
+/* eslint-disable new-cap, no-underscore-dangle, no-param-reassign */
 
 const path = require('path');
 const fs = require('fs');
@@ -7,12 +7,10 @@ const httpErrors = require('httperrors');
 const scrypt = require('scrypt');
 const debug = require('debug')('sap:controller:auth');
 
-// 0.1 -> maxtime
-const scryptParameters = scrypt.paramsSync(0.1);
-
-
 const UserModel = require('../models/users').UserModel;
 
+// 0.1 -> maxtime
+const scryptParameters = scrypt.paramsSync(0.1);
 const privateCert = fs.readFileSync(path.resolve('./keys/mykey.pem'));
 
 exports.login = (req, res, next) => {
@@ -71,6 +69,7 @@ exports.signup = (req, res, next) => {
       return UserModel.findOneAndUpdate(query, newUserData, { new: true, upsert: true });
     })
     .then((user) => {
+      delete user.password;
       debug(user);
       return res.status(200).json({ user });
     })
