@@ -45,7 +45,7 @@ window.onload = () => {
         tokenDecoded = jwt_decode(data.token);
         token = data.token;
         readWidgetHandler.call('LOAD_USER_INFO', { token: data.token, userId: tokenDecoded.userId });
-        writeWidgetHandler.call('ENABLE_WRITE', { token: data.token, userId: tokenDecoded.userId });
+        writeWidgetHandler.call('ENABLE_WRITE', data.token, tokenDecoded.userId);
       });
 
       // Flow 2

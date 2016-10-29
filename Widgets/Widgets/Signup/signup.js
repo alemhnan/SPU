@@ -4,6 +4,10 @@ window.onload = () => {
   if (SPU.inIframe() === true) {
     new SPU.Widget({
       widgetWindow: window,
+      actions: {},
+      events: {
+        SIGNEDUP: {},
+      },
       allowedOrigins: [
         'https://containerspu.surge.sh',
         'https://popcontainerspu.surge.sh',
