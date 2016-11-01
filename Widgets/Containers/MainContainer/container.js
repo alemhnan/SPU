@@ -25,7 +25,7 @@ window.onload = () => {
   let writeWidgetHandler;
   const handShakeWriteWidget = new SPU.Container({
     widgetContainer: document.getElementById('writeFrameDiv'),
-    url: 'https://readwritespu.surge.sh/index.html',
+    url: 'https://writespu.surge.sh/index.html',
   })
     .then((_writeWidgetHandler) => { writeWidgetHandler = _writeWidgetHandler; });
   // End write login widget
