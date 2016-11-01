@@ -52,8 +52,5 @@ window.onload = () => {
       // Flow 2
       writeWidgetHandler.on('WROTE', () =>
         readWidgetHandler.call('LOAD_USER_INFO', { token, userId: tokenDecoded.userId }));
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };

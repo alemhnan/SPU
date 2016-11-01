@@ -194,7 +194,6 @@ class Widget {
       const { action, data } = event.data;
 
       if (event.data.type === 'call') {
-        debugger;
         if (action in this.actions && typeof this.actions[action] === 'function') {
           this.actions[action].call(this, data);
         }
