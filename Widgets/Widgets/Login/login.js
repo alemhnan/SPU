@@ -1,35 +1,41 @@
-let containerHandler;
-
-window.onload = () => {
+const init = () => {
   if (SPU.inIframe() === true) {
-    new SPU.Widget({
-      widgetWindow: window,
-      allowedOrigins: [
-        'https://containerspu.surge.sh',
-        'https://popcontainerspu.surge.sh',
-      ],
-      model: {},
-    })
-      .then((_containerHandler) => { containerHandler = _containerHandler; });
-  }
-
-  $('#loginForm').submit(function sumbitLoginForm(event) {
-    event.preventDefault();
-    const formData = $(this).serialize();
-
-    $.post('https://spu.herokuapp.com/auth/login', formData)
-      .done((response) => {
-        $('input[type="submit"]').attr('disabled', 'true');
-
-        if (containerHandler) {
-          containerHandler.emit('LOGGED', { token: response.token });
-        } else {
-          $('#messageSpace').html(response.token);
-        }
+    let containerHandler;
+    const loadWidget = allowedOrigins =>
+      new SPU.Widget({
+        actions: {},
+        events: {
+          LOGGED: {},
+        },
+        allowedOrigins,
       })
-      .fail((response) => {
-        $('#messageSpace').html(response.responseText);
-      });
-  });
+        .then((_containerHandler) => { containerHandler = _containerHandler; });
+
+    $.ajax({
+      url: 'https://spu.herokuapp.com/auth/allowedDomains',
+      async: false,
+      success: loadWidget,
+    });
+
+    $('#loginForm').submit(function sumbitLoginForm(event) {
+      event.preventDefault();
+      const formData = $(this).serialize();
+
+      $.post('https://spu.herokuapp.com/auth/login', formData)
+        .done((response) => {
+          $('input[type="submit"]').attr('disabled', 'true');
+
+          if (containerHandler) {
+            containerHandler.emit('LOGGED', { token: response.token });
+          } else {
+            $('#messageSpace').html(response.token);
+          }
+        })
+        .fail((response) => {
+          $('#messageSpace').html(response.responseText);
+        });
+    });
+  }
 };
 
+document.addEventListener('DOMContentLoaded', init);

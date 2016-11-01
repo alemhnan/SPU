@@ -1,3 +1,22 @@
+const COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+const DEFAULT_PARAMS = /=[^,]+/mg;
+const FAT_ARROWS = /=>.*$/mg;
+const SPACES = /\s/mg;
+const BEFORE_OPENING_PAREN = /^[^(]*\(/mg;
+const AFTER_CLOSING_PAREN = /^([^)]*)\).*$/mg;
+
+const getParameterNames = (fn) => {
+  const code = fn.toString()
+    .replace(SPACES, '')
+    .replace(COMMENTS, '')
+    .replace(FAT_ARROWS, '')
+    .replace(DEFAULT_PARAMS, '')
+    .replace(BEFORE_OPENING_PAREN, '')
+    .replace(AFTER_CLOSING_PAREN, '$1');
+
+  return code ? code.split(',') : [];
+};
+
 /**
  * The type of messages our frames our sending
  * @type {String}
@@ -55,7 +74,7 @@ class Container {
   constructor(args) {
     const { windowContainer, widgetContainer, url } = args;
 
-    this.windowContainer = windowContainer;
+    this.windowContainer = windowContainer || window;
 
     // http://stackoverflow.com/questions/16010204/get-reference-of-window-object-from-a-dom-element
     const widgetWindow = widgetContainer.ownerDocument.defaultView;
@@ -63,19 +82,20 @@ class Container {
 
     (widgetContainer || widgetWindow.document.body).appendChild(this.widgetFrame);
 
+    //  probably error after || ?    
     this.windowWidget = this.widgetFrame.contentWindow || this.widgetFrame.contentDocument.parentWindow;
 
     return this.sendHandShake(url)
       .then((widgetOrigin) => {
-        this.windowOrigin = widgetOrigin;
+        this.widgetOrigin = widgetOrigin;
 
         this.events = {};
 
-        this.listener = (event) => {
-          const { action, data } = (event || {}).data;
-          if (event.data.type === 'emit') {
-            if (action in this.events && typeof this.events[action] === 'function') {
-              this.events[action].call(this, data);
+        this.listener = (widgetMessage) => {
+          const { event, data, type } = (widgetMessage || {}).data;
+          if (type === 'emit') {
+            if (event in this.events && typeof this.events[event] === 'function') {
+              this.events[event].call(this, data);
             }
           }
         };
@@ -126,7 +146,7 @@ class Container {
       action,
       data,
     };
-    this.windowWidget.postMessage(message, this.windowOrigin);
+    this.windowWidget.postMessage(message, this.widgetOrigin);
   }
 
   on(eventName, callback) {
@@ -147,30 +167,61 @@ class Widget {
 
   /**
     * Initializes the widget, container, parent, and responds to the Container handshake
-    * @param {Object} model Hash of values, functions, or promises
+    * @param {Object} events Hash of functions or promises
+    * @param {Object} actions Hash of functions or promises
     * @return {Promise} The Promise that resolves when the handshake has been received
     */
   constructor(args) {
-    const { widgetWindow, model, allowedOrigins } = args;
+    const { widgetWindow, events, actions, allowedOrigins, onlyManifest } = args;
 
-    this.widgetWindow = widgetWindow;
-    this.model = model;
+    this.widgetWindow = widgetWindow || window;
+    this.events = events || {};
+    this.actions = actions || {};
+
+    // this.allowedOrigins = allowedOrigins || [];
+    // this.onlyManifest = onlyManifest || false;
+    // this.actions.getManifest = () => console.log(this.manifest);
+
+    this.manifest = this.getManifest();
+    if (onlyManifest) {
+      return Promise.resolve(this);
+    }
+
     // this.containerWindow = containerWindow;
-
     this.widgetWindow.addEventListener('message', (event) => {
       if (!sanitize(event, this.containerOrigin)) return;
 
       const { action, data } = event.data;
 
       if (event.data.type === 'call') {
-        if (action in this.model && typeof this.model[action] === 'function') {
-          this.model[action].call(this, data);
+        if (action in this.actions && typeof this.actions[action] === 'function') {
+          this.actions[action].call(this, data);
         }
         return;
       }
     });
 
     return this.sendHandshakeReply(allowedOrigins);
+  }
+
+  getManifest() {
+    const events = [];
+    Object.keys(this.events).forEach(name => events.push({ name }));
+
+    const actions = [];
+    Object.keys(this.actions).forEach(item =>
+      actions.push({
+        name: item,
+        parameters: getParameterNames(this.actions[item]),
+      })
+    );
+
+    return {
+      name: 'TO_BE_DONE',
+      url: 'url',
+      actions,
+      events,
+    };
   }
 
   sendHandshakeReply(allowedOrigins) {
@@ -210,14 +261,16 @@ class Widget {
     });
   }
 
-  emit(action, data) {
-    const message = {
-      mimeType: MIME_TYPE,
-      type: 'emit',
-      action,
-      data,
-    };
-    this.containerWindow.postMessage(message, this.containerOrigin);
+  emit(event, data) {
+    if (event in this.events) {
+      const message = {
+        mimeType: MIME_TYPE,
+        type: 'emit',
+        event,
+        data,
+      };
+      this.containerWindow.postMessage(message, this.containerOrigin);
+    }
   }
 }
 

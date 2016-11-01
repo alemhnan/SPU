@@ -1,3 +1,13 @@
+const getParameterByName = (_name, _url) => {
+  const url = _url || window.location.href;
+  const name = _name.replace(/[\[\]]/g, '\\$&');
+  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+  const results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+
 let containerHandler;
 
 const enableWrite = (token, userId) => {
@@ -23,20 +33,38 @@ const enableWrite = (token, userId) => {
   });
 };
 
-window.onload = () => {
-  if (SPU.inIframe() === true) {
-    const model = {
+const init = () => {
+  const getManifest = getParameterByName('getManifest') === 'true';
+  if (SPU.inIframe() === true || getManifest === true) {
+    const actions = {
       ENABLE_WRITE: data => enableWrite(data.token, data.userId),
     };
 
-    new SPU.Widget({
-      widgetWindow: window,
-      allowedOrigins: [
-        'https://containerspu.surge.sh',
-        'https://popcontainerspu.surge.sh',
-      ],
-      model,
-    })
-      .then((_containerHandler) => { containerHandler = _containerHandler; });
+    const loadWidget = (allowedOrigins) => {
+      new SPU.Widget({
+        actions,
+        events: {
+          WROTE: {},
+        },
+        allowedOrigins,
+        onlyManifest: getManifest,
+      })
+        .then((_containerHandler) => {
+          containerHandler = _containerHandler;
+          if (getManifest === true) {
+            document.open('application/json', 'replace');
+            document.write(JSON.stringify(containerHandler.manifest));
+            document.close();
+          }
+        });
+    };
+
+    $.ajax({
+      url: 'https://spu.herokuapp.com/auth/allowedDomains',
+      async: false,
+      success: loadWidget,
+    });
   }
 };
+
+document.addEventListener('DOMContentLoaded', init);

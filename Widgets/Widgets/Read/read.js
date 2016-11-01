@@ -21,22 +21,27 @@ const loadUserInfo = (token, userId) => {
     });
 };
 
-window.onload = () => {
+const init = () => {
   $('#messageSpace').html('<p>No info yet</p>');
   if (SPU.inIframe() === true) {
-    const model = {
+    const actions = {
       LOAD_USER_INFO: data => loadUserInfo(data.token, data.userId),
     };
-    new SPU.Widget({
-      widgetWindow: window,
-      allowedOrigins: [
-        'https://containerspu.surge.sh',
-        'https://popcontainerspu.surge.sh',
-      ],
-      model,
-    })
-      // .then((_containerHandler) => { containerHandler = _containerHandler; });
-      .then(() => { });
+
+    const loadWidget = allowedOrigins =>
+      new SPU.Widget({
+        actions,
+        events: {},
+        allowedOrigins,
+      });
+    // .then((_containerHandler) => { containerHandler = _containerHandler; });
+
+    $.ajax({
+      url: 'https://spu.herokuapp.com/auth/allowedDomains',
+      async: false,
+      success: loadWidget,
+    });
   }
 };
 
+document.addEventListener('DOMContentLoaded', init);

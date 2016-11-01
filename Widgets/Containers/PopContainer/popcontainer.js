@@ -3,7 +3,7 @@ window.onload = () => {
   // Init login widget
   let loginWidgetHandler;
   const handShakeLoginWidget = new SPU.Container({
-    windowContainer: window,
+    // windowContainer: window,
     widgetContainer: document.getElementById('loginFrameDiv'),
     url: 'https://loginspu.surge.sh/index.html',
   })
@@ -19,7 +19,7 @@ window.onload = () => {
     // Init signup widget
     // const handShakeSignupWidget =
     new SPU.Container({
-      windowContainer: window,
+      // windowContainer: window,
       widgetContainer: popUpWindow.document.getElementById('signupFrameDiv'),
       url: 'https://signupspu.surge.sh/index.html',
     })
