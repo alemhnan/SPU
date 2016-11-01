@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle, no-param-reassign */
 window.onload = () => {
   let token = null;
   let tokenDecoded = null;
@@ -20,7 +21,6 @@ window.onload = () => {
     .then((_readWidgetHandler) => { readWidgetHandler = _readWidgetHandler; });
   // End read login widget
 
-
   // Init write widget
   let writeWidgetHandler;
   const handShakeWriteWidget = new SPU.Container({
@@ -30,16 +30,41 @@ window.onload = () => {
     .then((_writeWidgetHandler) => { writeWidgetHandler = _writeWidgetHandler; });
   // End write login widget
 
+  $('#signupButton').click(() => {
+    const popUpWindow = window.open('', 'Signup', 'height=350,width=450');
+    const newDiv = popUpWindow.document.createElement('div');
+    newDiv.id = 'signupFrameDiv';
+    popUpWindow.document.body.appendChild(newDiv);
+
+    // Init signup widget
+    new SPU.Container({
+      widgetContainer: popUpWindow.document.getElementById('signupFrameDiv'),
+      url: 'https://signupspu.surge.sh/index.html',
+    })
+      .then((signupWidgetHandler) => {
+        signupWidgetHandler.widgetFrame.style.height = `${300}px`;
+        signupWidgetHandler.widgetFrame.style.width = `${400}px`;
+        // Flow 2
+        signupWidgetHandler.on('SIGNEDUP', (data) => {
+          const html = `<p>${data.user.name}</p><p>${data.user._id}</p>`;
+          window.$('#messageSpace').html(html);
+          window.console.log(html);
+          popUpWindow.close();
+        });
+      });
+    // End signup login widget
+  });
+
   Promise.all([handShakeLoginWidget, handShakeReadWidget, handShakeWriteWidget])
     .then(() => {
-      loginWidgetHandler.widgetFrame.style.height = `${300}px`;
-      loginWidgetHandler.widgetFrame.style.width = `${400}px`;
+      loginWidgetHandler.widgetFrame.style.height = `${250}px`;
+      loginWidgetHandler.widgetFrame.style.width = `${350}px`;
 
-      readWidgetHandler.widgetFrame.style.height = `${300}px`;
-      readWidgetHandler.widgetFrame.style.width = `${400}px`;
+      readWidgetHandler.widgetFrame.style.height = `${250}px`;
+      readWidgetHandler.widgetFrame.style.width = `${350}px`;
 
-      writeWidgetHandler.widgetFrame.style.height = `${300}px`;
-      writeWidgetHandler.widgetFrame.style.width = `${400}px`;
+      writeWidgetHandler.widgetFrame.style.height = `${250}px`;
+      writeWidgetHandler.widgetFrame.style.width = `${350}px`;
 
       // Flow 1
       loginWidgetHandler.on('LOGGED', (data) => {

@@ -7,20 +7,50 @@
 	<meta name="description" content="Standard Portale Unico [SPU] Sanità Regione Veneto">
 	<meta name="author" content="AM">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<style>
+		#content-wrapper {
+			display: table;
+		}
+		
+		#content {
+			display: table-row;
+		}
+		
+		#content>div {
+			display: table-cell
+		}
+	</style>
 </head>
 
 <body>
 	<h1>Container Window</h1>
 
-	<div id="loginFrameDiv" style="float:left"></div>
+	<div id="content-wrapper">
+		<div id="content">
+			<div>
+				<a href="#" id="signupButton">Sign up (open a popup window)</a>
+			</div>
+			<div id="messageSpace"></div>
+		</div>
 
-	<div id="readFrameDiv" style="float:left"></div>
+		<div id="content">
+			<div id="loginFrameDiv"></div>
+			<div id="readFrameDiv"></div>
+			<div id="writeFrameDiv"></div>
+		</div>
 
-	<div id="writeFrameDiv" style="float:left"></div>
+	</div>
+	</div>
 
-	<p>
+	<!--<a href="#" id="signupButton" style="float:left ">Sign up (open a popup window)</a>
+	<div id="loginFrameDiv" style="float:left"></div>-->
+
+	<!--<div id="readFrameDiv" style="float:left"></div>
+	<div id="writeFrameDiv" style="float:left"></div>-->
+
+	<!--<p>
 		<div id="messageSpace" style="float:left"></div>
-	</p>
+	</p>-->
 
 	<script src="spu.min.js"></script>
 	<script src="jwt-decode.min.js"></script>
