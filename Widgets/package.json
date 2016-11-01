@@ -7,6 +7,7 @@
   "homepage": "https://github.com/alemhnan/SPU",
   "scripts": {
     "build": "gulp build",
+    "deploy": "gulp build && ./deploy.surge.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com> (http://www.redbabel.com)",
