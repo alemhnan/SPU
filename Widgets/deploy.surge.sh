@@ -6,8 +6,8 @@ surge Containers/MainContainer
 # cp build/spu* Containers/BadContainer/spu.js
 # surge Containers/BadContainer
 
-cp build/spu* Containers/PopContainer/
-surge Containers/PopContainer
+# cp build/spu* Containers/PopContainer/
+# surge Containers/PopContainer
 
 cp build/spu* Widgets/Signup/
 surge Widgets/Signup

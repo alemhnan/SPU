@@ -33,37 +33,38 @@ const enableWrite = (token, userId) => {
   });
 };
 
-window.onload = () => {
+const init = () => {
   const getManifest = getParameterByName('getManifest') === 'true';
-
   if (SPU.inIframe() === true || getManifest === true) {
     const actions = {
-      ENABLE_WRITE: (token, userId) => enableWrite(token, userId),
+      ENABLE_WRITE: data => enableWrite(data.token, data.userId),
     };
 
-    new SPU.Widget({
-      widgetWindow: window,
-      actions,
-      events: {
-        WROTE: {},
-      },
-      allowedOrigins: [
-        'https://containerspu.surge.sh',
-        'https://popcontainerspu.surge.sh',
-      ],
-      onlyManifest: getManifest,
-    })
-      .then((_containerHandler) => {
-        containerHandler = _containerHandler;
-        if (getManifest === true) {
-          document.open('application/json', 'replace');
-          document.write(JSON.stringify(containerHandler.manifest));
-          document.close();
-        }
+    const loadWidget = (allowedOrigins) => {
+      new SPU.Widget({
+        actions,
+        events: {
+          WROTE: {},
+        },
+        allowedOrigins,
+        onlyManifest: getManifest,
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((_containerHandler) => {
+          containerHandler = _containerHandler;
+          if (getManifest === true) {
+            document.open('application/json', 'replace');
+            document.write(JSON.stringify(containerHandler.manifest));
+            document.close();
+          }
+        });
+    };
+
+    $.ajax({
+      url: 'https://spu.herokuapp.com/auth/allowedDomains',
+      async: false,
+      success: loadWidget,
+    });
   }
 };
 
+document.addEventListener('DOMContentLoaded', init);

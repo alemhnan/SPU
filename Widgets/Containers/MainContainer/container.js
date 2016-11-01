@@ -5,7 +5,6 @@ window.onload = () => {
   // Init login widget
   let loginWidgetHandler;
   const handShakeLoginWidget = new SPU.Container({
-    windowContainer: window,
     widgetContainer: document.getElementById('loginFrameDiv'),
     url: 'https://loginspu.surge.sh/index.html',
   })
@@ -15,17 +14,16 @@ window.onload = () => {
   // Init read widget
   let readWidgetHandler;
   const handShakeReadWidget = new SPU.Container({
-    windowContainer: window,
     widgetContainer: document.getElementById('readFrameDiv'),
     url: 'https://readspu.surge.sh/index.html',
   })
     .then((_readWidgetHandler) => { readWidgetHandler = _readWidgetHandler; });
   // End read login widget
 
+
   // Init write widget
   let writeWidgetHandler;
   const handShakeWriteWidget = new SPU.Container({
-    windowContainer: window,
     widgetContainer: document.getElementById('writeFrameDiv'),
     url: 'https://readwritespu.surge.sh/index.html',
   })
@@ -41,7 +39,6 @@ window.onload = () => {
       readWidgetHandler.widgetFrame.style.width = `${400}px`;
 
       writeWidgetHandler.widgetFrame.style.height = `${300}px`;
-      const wwManifest = writeWidgetHandler.call('getManifest');
       writeWidgetHandler.widgetFrame.style.width = `${400}px`;
 
       // Flow 1
@@ -49,11 +46,14 @@ window.onload = () => {
         tokenDecoded = jwt_decode(data.token);
         token = data.token;
         readWidgetHandler.call('LOAD_USER_INFO', { token: data.token, userId: tokenDecoded.userId });
-        writeWidgetHandler.call('ENABLE_WRITE', data.token, tokenDecoded.userId);
+        writeWidgetHandler.call('ENABLE_WRITE', { token: data.token, userId: tokenDecoded.userId });
       });
 
       // Flow 2
       writeWidgetHandler.on('WROTE', () =>
         readWidgetHandler.call('LOAD_USER_INFO', { token, userId: tokenDecoded.userId }));
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };

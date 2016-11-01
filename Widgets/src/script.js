@@ -74,7 +74,7 @@ class Container {
   constructor(args) {
     const { windowContainer, widgetContainer, url } = args;
 
-    this.windowContainer = windowContainer;
+    this.windowContainer = windowContainer || window;
 
     // http://stackoverflow.com/questions/16010204/get-reference-of-window-object-from-a-dom-element
     const widgetWindow = widgetContainer.ownerDocument.defaultView;
@@ -82,19 +82,20 @@ class Container {
 
     (widgetContainer || widgetWindow.document.body).appendChild(this.widgetFrame);
 
+    //  probably error after || ?    
     this.windowWidget = this.widgetFrame.contentWindow || this.widgetFrame.contentDocument.parentWindow;
 
     return this.sendHandShake(url)
       .then((widgetOrigin) => {
-        this.windowOrigin = widgetOrigin;
+        this.widgetOrigin = widgetOrigin;
 
         this.events = {};
 
-        this.listener = (event) => {
-          const { action, data } = (event || {}).data;
-          if (event.data.type === 'emit') {
-            if (action in this.events && typeof this.events[action] === 'function') {
-              this.events[action].call(this, data);
+        this.listener = (widgetMessage) => {
+          const { event, data, type } = (widgetMessage || {}).data;
+          if (type === 'emit') {
+            if (event in this.events && typeof this.events[event] === 'function') {
+              this.events[event].call(this, data);
             }
           }
         };
@@ -145,7 +146,7 @@ class Container {
       action,
       data,
     };
-    this.windowWidget.postMessage(message, this.windowOrigin);
+    this.windowWidget.postMessage(message, this.widgetOrigin);
   }
 
   on(eventName, callback) {
@@ -173,9 +174,12 @@ class Widget {
   constructor(args) {
     const { widgetWindow, events, actions, allowedOrigins, onlyManifest } = args;
 
-    this.widgetWindow = widgetWindow;
-    this.events = events;
-    this.actions = actions;
+    this.widgetWindow = widgetWindow || window;
+    this.events = events || {};
+    this.actions = actions || {};
+
+    // this.allowedOrigins = allowedOrigins || [];
+    // this.onlyManifest = onlyManifest || false;
     // this.actions.getManifest = () => console.log(this.manifest);
 
     this.manifest = this.getManifest();
@@ -190,6 +194,7 @@ class Widget {
       const { action, data } = event.data;
 
       if (event.data.type === 'call') {
+        debugger;
         if (action in this.actions && typeof this.actions[action] === 'function') {
           this.actions[action].call(this, data);
         }
@@ -258,7 +263,6 @@ class Widget {
   }
 
   emit(event, data) {
-    // if (event in this.events && typeof this.events[event] === 'function') {
     if (event in this.events) {
       const message = {
         mimeType: MIME_TYPE,
