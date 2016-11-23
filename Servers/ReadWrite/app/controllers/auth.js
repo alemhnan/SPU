@@ -39,7 +39,7 @@ exports.isAuthenticated = (req, res, next) => {
   try {
     const options = {
       algorithm: 'RS256',
-      issuer: ['SPU.WP'],
+      issuer: [issuer],
     };
     const decodedAndVerified = jwt.verify(token, pk, options);
     req.user = decodedAndVerified;
