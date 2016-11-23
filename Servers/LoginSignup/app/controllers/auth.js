@@ -42,7 +42,10 @@ exports.login = (req, res, next) => {
       };
 
       debug(objToSign);
-      const options = { algorithm: 'RS256' };
+      const options = {
+        algorithm: 'RS256',
+        issuer: 'SPUWP',
+      };
 
       const token = jwt.sign(objToSign, privateCert, options);
       return res.status(200).json({ token });

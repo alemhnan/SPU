@@ -1,4 +1,3 @@
-/* eslint no-confusing-arrow: ["error", {allowParens: true}],  */
 /* eslint-disable no-param-reassign */
 
 const path = require('path');
@@ -8,7 +7,10 @@ const httpErrors = require('httperrors');
 
 const debug = require('debug')('sap:controller:auth');
 
-const publicKey = fs.readFileSync(path.resolve('./keys/mykey.pub'));
+const SPUWPpKey = fs.readFileSync(path.resolve('./keys/spuwp.pub'));
+const pKeys = {
+  SPUWP: SPUWPpKey,
+};
 
 const fromHeaderOrQuerystring = (req) => {
   debug(req.headers);
@@ -22,10 +24,25 @@ const fromHeaderOrQuerystring = (req) => {
 
 exports.isAuthenticated = (req, res, next) => {
   const token = fromHeaderOrQuerystring(req);
+  const decoded = jwt.decode(token);
+  const issuer = decoded.iss;
+
+  if (!issuer) {
+    return next(new Error('Issuer not set'));
+  }
+
+  const pk = pKeys[issuer];
+  if (!pk) {
+    return next(new Error('Issuer not known'));
+  }
+
   try {
-    const options = { algorithm: 'RS256' };
-    const decoded = jwt.verify(token, publicKey, options);
-    req.user = decoded;
+    const options = {
+      algorithm: 'RS256',
+      issuer: ['SPU.WP'],
+    };
+    const decodedAndVerified = jwt.verify(token, pk, options);
+    req.user = decodedAndVerified;
     return next();
   } catch (err) {
     return next(err);
